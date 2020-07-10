@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:12.16.2
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-cache-{{ checksum "package-lock.json" }}
+      - run: npm install
+      - run: node app.js
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-cache-{{ checksum "package-lock.json" }}
+
+workflows:
+  build:
+    jobs:
+      - build
