@@ -2,6 +2,7 @@ version: 2.1
 
 jobs:
   build:
+    context: my-context
     docker:
       - image: cimg/node:12.16.2
     steps:
@@ -11,6 +12,8 @@ jobs:
             - v1-cache-{{ checksum "package-lock.json" }}
       - run: npm install
       - run: node app.js
+      - run: echo $PROJECT_ENV
+      - run: echo $CONTEXT_ENV
       - save_cache:
           paths:
             - node_modules
